@@ -39,7 +39,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
 
         setContentView(R.layout.activity_main);
@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             public void onPageFlip(ViewFlipper flipper, int whichChild) {
                 //Log.d("onPageFlip", "onPageFlip:" + whichChild);
 
-
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
             }
         });
 
@@ -80,6 +80,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             // 取得左右滑动时手指按下的X坐标
             touchDownX = event.getX();
+
+            if (event.getX()>0 && event.getX()<200 && event.getY()>0 && event.getY()<200)
+                getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_VISIBLE);
+
             return true;
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             // 取得左右滑动时手指松开的X坐标
