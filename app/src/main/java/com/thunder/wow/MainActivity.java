@@ -9,8 +9,11 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -22,17 +25,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnTouchListener {
 
 
     private AdvertisementViewFlipper viewFlipper;
     private String scan_path = "wow";
     private UsbReceiver usbReceiver;
+    private float touchDownX;  // 手指按下的X坐标
+    private float touchUpX;  //手指松开的X坐标
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+
         setContentView(R.layout.activity_main);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -50,6 +59,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        viewFlipper.setOnTouchListener(this);
         usbReceiver = new UsbReceiver(this);
 
 
@@ -63,6 +73,39 @@ public class MainActivity extends Activity {
         filter.addDataScheme("file");
 
         registerReceiver(usbReceiver, filter);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            // 取得左右滑动时手指按下的X坐标
+            touchDownX = event.getX();
+            return true;
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            // 取得左右滑动时手指松开的X坐标
+            touchUpX = event.getX();
+            // 从左往右，看前一个View
+            if (touchUpX - touchDownX > 100) {
+                // 显示上一屏动画
+                viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this,
+                        R.anim.fade_in));
+                viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this,
+                        R.anim.fade_out));
+                // 显示上一屏的View
+                viewFlipper.showPrevious();
+                // 从右往左，看后一个View
+            } else if (touchDownX - touchUpX > 100) {
+                //显示下一屏的动画
+                viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this,
+                        R.anim.fade_in));
+                viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this,
+                        R.anim.fade_out));
+                // 显示下一屏的View
+                viewFlipper.showNext();
+            }
+            return true;
+        }
+        return false;
     }
 
 
