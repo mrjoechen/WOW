@@ -49,7 +49,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
 
         new ScanTask().execute("");
-        viewFlipper.setFlipInterval(5000);
+        viewFlipper.setFlipInterval(12000);
         viewFlipper.setOnPageFlipperListener(new AdvertisementViewFlipper.OnPageFlipListener() {
             @Override
             public void onPageFlip(ViewFlipper flipper, int whichChild) {
