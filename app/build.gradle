@@ -18,13 +18,13 @@ android {
         }
     }
 
-  android.applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-
-            def fileName = output.outputFileName.replace(".apk", "_" + variant.versionCode + "_" + variant.versionName + ".apk")
-            outputFileName = new File(fileName)
-        }
-    }
+//  android.applicationVariants.all { variant ->
+//        variant.outputs.all { output ->
+//
+//            def fileName = output.outputFileName.replace(".apk", "_" + variant.versionCode + "_" + variant.versionName + ".apk")
+//            outputFileName = new File(fileName)
+//        }
+//    }
 }
 
 dependencies {
