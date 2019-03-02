@@ -12,19 +12,34 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
-//  android.applicationVariants.all { variant ->
-//        variant.outputs.all { output ->
-//
-//            def fileName = output.outputFileName.replace(".apk", "_" + variant.versionCode + "_" + variant.versionName + ".apk")
-//            outputFileName = new File(fileName)
-//        }
-//    }
+
+    productFlavors {
+
+        general {
+            dependencies {
+            }
+
+        }
+    }
+
+  android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def fileName = output.outputFileName.replace(".apk", "_" + variant.versionCode + "_" + variant.versionName + ".apk")
+            outputFileName = new File(fileName)
+        }
+    }
 }
 
 dependencies {
